@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Event Brief — NegativeCoto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --ink:      #0f0f11;
+      --ink-2:    #3a3a42;
+      --ink-3:    #7c7c8a;
+      --bg:       #fafaf8;
+      --surface:  #ffffff;
+      --border:   #e8e8e4;
+      --gold:     #c9a84c;
+      --gold-lt:  #f0dfa0;
+      --gold-dk:  #8a6820;
+      --accent:   #1a1a2e;
+      --accent-2: #16213e;
+      --red:      #d64045;
+      --radius:   14px;
+      --shadow:   0 2px 16px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.05);
+      --shadow-lg:0 8px 40px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.65;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Print ── */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #fff; font-size: 12pt; }
+      .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+      .cover { min-height: unset !important; page-break-after: always; }
+      section { page-break-inside: avoid; }
+    }
+
+    /* ── Utilities ── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      padding: 5px 12px; border-radius: 999px;
+    }
+    .badge-gold { background: var(--gold-lt); color: var(--gold-dk); }
+    .badge-dark { background: var(--accent); color: #fff; }
+    .badge-red  { background: #fde8e8; color: var(--red); }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px;
+    }
+    .serif { font-family: 'DM Serif Display', serif; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+    .card {
+      background: var(--surface); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      padding: 28px 32px;
+    }
+
+    /* ── Top bar ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,250,248,.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 0;
+    }
+    .topbar-inner { display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-weight: 800; font-size: 16px; letter-spacing: -.02em; }
+    .logo span { color: var(--gold); }
+    .print-btn {
+      display: inline-flex; align-items: center; gap-8px; gap: 8px;
+      background: var(--ink); color: #fff;
+      font-size: 13px; font-weight: 600; padding: 8px 20px;
+      border-radius: 999px; border: none; cursor: pointer;
+      transition: opacity .15s;
+    }
+    .print-btn:hover { opacity: .82; }
+
+    /* ── Cover ── */
+    .cover {
+      min-height: 82vh;
+      background: var(--accent);
+      background-image:
+        radial-gradient(ellipse 70% 60% at 80% 20%, rgba(201,168,76,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 10% 90%, rgba(201,168,76,.10) 0%, transparent 55%);
+      display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .cover::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 39px, rgba(255,255,255,.03) 40px
+      ), repeating-linear-gradient(
+        90deg, transparent, transparent 39px, rgba(255,255,255,.03) 40px
+      );
+    }
+    .cover-inner {
+      position: relative; z-index: 1;
+      padding: 80px 0;
+    }
+    .cover-eyebrow {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 28px;
+    }
+    .cover-line { flex: 1; max-width: 60px; height: 1px; background: var(--gold); }
+    .cover-eyebrow-text {
+      font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--gold);
+    }
+    .cover-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(38px, 7vw, 72px);
+      line-height: 1.05;
+      color: #ffffff;
+      margin-bottom: 18px;
+    }
+    .cover-title em { color: var(--gold); font-style: italic; }
+    .cover-sub {
+      font-size: 17px; color: rgba(255,255,255,.6);
+      max-width: 520px; margin-bottom: 48px; line-height: 1.7;
+    }
+    .cover-meta {
+      display: flex; flex-wrap: wrap; gap: 20px;
+    }
+    .cover-meta-item {
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .cover-meta-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: rgba(201,168,76,.15); border: 1px solid rgba(201,168,76,.3);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 15px;
+    }
+    .cover-meta-label { font-size: 11px; color: rgba(255,255,255,.4); font-weight: 500; }
+    .cover-meta-value { font-size: 14px; font-weight: 600; color: #fff; }
+    .cover-badge {
+      position: absolute; top: 36px; right: 0;
+      background: var(--gold); color: var(--accent);
+      font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      padding: 10px 24px;
+      border-radius: var(--radius) 0 0 var(--radius);
+    }
+
+    /* ── Section wrapper ── */
+    .section { padding: 64px 0; }
+    .section-header { margin-bottom: 36px; }
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 4vw, 38px);
+      line-height: 1.15; color: var(--ink);
+    }
+    .section-desc { color: var(--ink-3); margin-top: 8px; max-width: 560px; }
+
+    /* ── Overview cards ── */
+    .overview-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px;
+    }
+    .overview-card {
+      background: var(--surface); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 22px 24px;
+      position: relative; overflow: hidden;
+    }
+    .overview-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      height: 3px; width: 40px; background: var(--gold);
+      border-radius: 0 2px 0 0;
+    }
+    .overview-card-icon { font-size: 22px; margin-bottom: 12px; }
+    .overview-card-label { font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-3); }
+    .overview-card-value { font-size: 17px; font-weight: 700; color: var(--ink); margin-top: 4px; line-height: 1.3; }
+
+    /* ── Objective ── */
+    .objective-block {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+      border-radius: 20px; padding: 40px 44px;
+      position: relative; overflow: hidden;
+    }
+    .objective-block::before {
+      content: '"'; position: absolute; top: -10px; right: 32px;
+      font-family: 'DM Serif Display', serif; font-size: 160px;
+      color: rgba(201,168,76,.12); line-height: 1;
+    }
+    .objective-text {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(18px, 2.5vw, 24px);
+      color: #fff; line-height: 1.6; position: relative; z-index: 1;
+    }
+    .objective-author {
+      margin-top: 20px; display: flex; align-items: center; gap: 12px; position: relative; z-index: 1;
+    }
+    .objective-author-dot {
+      width: 28px; height: 2px; background: var(--gold);
+    }
+    .objective-author-name { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.6); }
+
+    /* ── Timeline / Rundown ── */
+    .timeline { position: relative; }
+    .timeline::before {
+      content: ''; position: absolute; left: 17px; top: 8px; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+    .timeline-item { display: flex; gap: 24px; margin-bottom: 0; position: relative; }
+    .timeline-item + .timeline-item { margin-top: 8px; }
+    .timeline-dot {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--surface); border: 2px solid var(--border);
+      font-size: 13px; font-weight: 700; color: var(--ink-3);
+      position: relative; z-index: 1;
+    }
+    .timeline-item.highlight .timeline-dot {
+      background: var(--gold); border-color: var(--gold); color: var(--accent);
+    }
+    .timeline-content {
+      flex: 1; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 22px; margin-bottom: 10px;
+    }
+    .timeline-item.highlight .timeline-content {
+      border-color: rgba(201,168,76,.4);
+      background: linear-gradient(135deg, rgba(201,168,76,.06) 0%, var(--surface) 100%);
+    }
+    .timeline-time {
+      font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 4px;
+    }
+    .timeline-session { font-size: 15px; font-weight: 700; color: var(--ink); }
+    .timeline-detail { font-size: 13px; color: var(--ink-3); margin-top: 4px; }
+    .timeline-pic {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 600; color: var(--ink-2); margin-top: 8px;
+    }
+    .timeline-pic::before { content: '👤'; font-size: 11px; }
+
+    /* ── Team ── */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 14px; }
+    .team-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; text-align: center;
+    }
+    .team-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold-lt), var(--gold));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin: 0 auto 12px;
+    }
+    .team-name { font-size: 14px; font-weight: 700; }
+    .team-role { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+    .team-contact { font-size: 12px; color: var(--gold-dk); margin-top: 6px; font-weight: 500; }
+
+    /* ── Sponsor ── */
+    .sponsor-tier { margin-bottom: 40px; }
+    .sponsor-tier-label {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .sponsor-tier-name {
+      font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+    }
+    .sponsor-tier-line { flex: 1; height: 1px; background: var(--border); }
+    .sponsor-grid { display: flex; flex-wrap: wrap; gap: 14px; }
+    .sponsor-box {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px 28px;
+      display: flex; align-items: center; justify-content: center;
+      min-width: 140px; min-height: 72px;
+      font-size: 14px; font-weight: 700; color: var(--ink-3);
+    }
+    .sponsor-box.gold-tier { border-color: rgba(201,168,76,.4); background: rgba(201,168,76,.05); }
+    .sponsor-box.silver-tier { border-color: rgba(180,180,195,.4); }
+
+    /* ── Budget ── */
+    .budget-table { width: 100%; border-collapse: collapse; }
+    .budget-table th {
+      font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--ink-3); padding: 10px 16px; text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+    .budget-table td { padding: 14px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+    .budget-table tr:last-child td { border-bottom: none; }
+    .budget-table .total td {
+      font-weight: 700; font-size: 15px; border-top: 2px solid var(--border);
+      padding-top: 16px;
+    }
+    .budget-amount { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; }
+    .budget-tag {
+      font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+    }
+    .budget-tag.confirmed { background: #e8f7f0; color: #1a8a5a; }
+    .budget-tag.pending   { background: #fff3e0; color: #c47700; }
+
+    /* ── Gallery ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto;
+      gap: 12px;
+    }
+    .gallery-item {
+      border-radius: 10px; overflow: hidden;
+      background: linear-gradient(135deg, #e8e8e4 0%, #d4d4ce 100%);
+      display: flex; align-items: center; justify-content: center;
+      aspect-ratio: 4/3;
+      font-size: 28px; color: var(--ink-3);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .gallery-item:first-child {
+      grid-column: span 2; aspect-ratio: 16/9;
+    }
+    .gallery-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.5), transparent);
+      padding: 20px 14px 12px;
+      font-size: 12px; font-weight: 600; color: #fff;
+    }
+
+    /* ── Deliverables ── */
+    .deliverable-list { display: flex; flex-direction: column; gap: 12px; }
+    .deliverable-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px 20px;
+    }
+    .deliverable-check {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: var(--gold); display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: #fff; margin-top: 1px;
+    }
+    .deliverable-title { font-size: 14px; font-weight: 700; }
+    .deliverable-desc { font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+
+    /* ── Contact CTA ── */
+    .cta-block {
+      background: var(--accent);
+      background-image: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(201,168,76,.2) 0%, transparent 60%);
+      border-radius: 20px; padding: 52px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 32px; flex-wrap: wrap;
+    }
+    .cta-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(22px, 3vw, 32px); color: #fff; margin-bottom: 10px;
+    }
+    .cta-sub { color: rgba(255,255,255,.55); font-size: 14px; max-width: 380px; }
+    .cta-btn {
+      background: var(--gold); color: var(--accent);
+      font-size: 14px; font-weight: 800; padding: 14px 32px;
+      border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+      transition: transform .15s, box-shadow .15s;
+      display: inline-block;
+    }
+    .cta-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(201,168,76,.4); }
+
+    /* ── Footer ── */
+    .footer {
+      background: var(--ink); color: rgba(255,255,255,.35);
+      padding: 36px 0; text-align: center; font-size: 13px;
+    }
+    .footer strong { color: rgba(255,255,255,.7); }
+    .footer-logo { font-weight: 800; font-size: 20px; color: #fff; margin-bottom: 8px; }
+    .footer-logo span { color: var(--gold); }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .cta-block { flex-direction: column; text-align: center; }
+      .cover-meta { flex-direction: column; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .gallery-item:first-child { grid-column: span 2; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<nav class="topbar no-print">
+  <div class="container topbar-inner">
+    <div class="logo">Negative<span>Coto</span></div>
+    <button class="print-btn" onclick="window.print()">⬇ Export PDF</button>
+  </div>
+</nav>
+
+<!-- ══════════════════ COVER ══════════════════ -->
+<header class="cover">
+  <div class="container cover-inner" style="width:100%">
+    <div class="cover-badge no-print">CONFIDENTIAL</div>
+    <div class="cover-eyebrow">
+      <div class="cover-line"></div>
+      <span class="cover-eyebrow-text">Event Brief — 2025</span>
+      <div class="cover-line"></div>
+    </div>
+
+    <h1 class="cover-title">
+      <em>Grand</em> Opening<br>NegativeCoto<br>Festival
+    </h1>
+    <p class="cover-sub">
+      Proposal resmi untuk penyelenggaraan acara berskala nasional dengan
+      pengalaman yang tak terlupakan bagi setiap peserta.
+    </p>
+
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <div class="cover-meta-icon">📅</div>
+        <div>
+          <div class="cover-meta-label">Tanggal</div>
+          <div class="cover-meta-value">15 – 16 Agustus 2025</div>
+        </div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-icon">📍</div>
+        <div>
+          <div class="cover-meta-label">Venue</div>
+          <div class="cover-meta-value">Balai Sudirman, Jakarta</div>
+        </div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-icon">👥</div>
+        <div>
+          <div class="cover-meta-label">Kapasitas</div>
+          <div class="cover-meta-value">1.500 Pax</div>
+        </div>
+      </div>
+      <div class="cover-meta-item">
+        <div class="cover-meta-icon">🏢</div>
+        <div>
+          <div class="cover-meta-label">Klien</div>
+          <div class="cover-meta-value">PT. Nama Klien</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════ OVERVIEW ══════════════════ -->
+<section class="section" style="padding-bottom:0">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">01 — Overview</p>
+      <h2 class="section-title serif">Gambaran Umum Acara</h2>
+      <p class="section-desc">Ringkasan cepat seluruh parameter penting event ini.</p>
+    </div>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="overview-card-icon">🗓</div>
+        <div class="overview-card-label">Durasi</div>
+        <div class="overview-card-value">2 Hari</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-icon">🎤</div>
+        <div class="overview-card-label">Pembicara</div>
+        <div class="overview-card-value">8 Speaker</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-icon">🎯</div>
+        <div class="overview-card-label">Target Audience</div>
+        <div class="overview-card-value">Profesional Muda</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-icon">📡</div>
+        <div class="overview-card-label">Format</div>
+        <div class="overview-card-value">Hybrid (On/Offline)</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-icon">📺</div>
+        <div class="overview-card-label">Live Stream</div>
+        <div class="overview-card-value">YouTube & Zoom</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-card-icon">📌</div>
+        <div class="overview-card-label">Status</div>
+        <div class="overview-card-value">Proposal</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ OBJECTIVE ══════════════════ -->
+<section class="section" style="padding-top:40px">
+  <div class="container">
+    <div class="objective-block">
+      <p class="objective-text">
+        "Menciptakan ruang kolaborasi dan inspirasi yang menghubungkan para profesional,
+        brand lokal, dan komunitas kreatif dalam satu platform perayaan yang autentik
+        dan berdampak nyata."
+      </p>
+      <div class="objective-author">
+        <div class="objective-author-dot"></div>
+        <div class="objective-author-name">Tujuan Utama Penyelenggaraan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ RUNDOWN ══════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">02 — Rundown</p>
+      <h2 class="section-title serif">Susunan Acara</h2>
+      <p class="section-desc">Jadwal lengkap dua hari penyelenggaraan event.</p>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <span class="badge badge-dark">Hari 1 — Sabtu, 15 Agustus 2025</span>
+    </div>
+    <div class="timeline" style="margin-bottom:40px">
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <div class="timeline-content">
+          <div class="timeline-time">07.00 – 08.00</div>
+          <div class="timeline-session">Registrasi & Welcome Coffee</div>
+          <div class="timeline-detail">Peserta check-in, pembagian name tag dan kit peserta</div>
+          <div class="timeline-pic">MC / Registrasi Team</div>
+        </div>
+      </div>
+      <div class="timeline-item highlight">
+        <div class="timeline-dot">🎙</div>
+        <div class="timeline-content">
+          <div class="timeline-time">08.00 – 09.00</div>
+          <div class="timeline-session">Opening Ceremony</div>
+          <div class="timeline-detail">Sambutan Direktur, Pemotongan Pita, Doa & Pembukaan Resmi</div>
+          <div class="timeline-pic">Direktur Utama + MC</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <div class="timeline-content">
+          <div class="timeline-time">09.00 – 10.30</div>
+          <div class="timeline-session">Keynote Session I</div>
+          <div class="timeline-detail">Tema: "Inovasi di Era Digital — Peluang & Tantangan"</div>
+          <div class="timeline-pic">Speaker 1 — [Nama Speaker]</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">3</div>
+        <div class="timeline-content">
+          <div class="timeline-time">10.30 – 11.00</div>
+          <div class="timeline-session">Coffee Break & Networking</div>
+          <div class="timeline-detail">Sesi bebas, sponsor booth visit</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">4</div>
+        <div class="timeline-content">
+          <div class="timeline-time">11.00 – 12.30</div>
+          <div class="timeline-session">Panel Discussion</div>
+          <div class="timeline-detail">Diskusi 4 narasumber lintas industri, moderasi oleh host</div>
+          <div class="timeline-pic">Moderator + 4 Narasumber</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">5</div>
+        <div class="timeline-content">
+          <div class="timeline-time">12.30 – 13.30</div>
+          <div class="timeline-session">Makan Siang & Hiburan</div>
+          <div class="timeline-detail">Catering prasmanan, live acoustic performance</div>
+        </div>
+      </div>
+      <div class="timeline-item highlight">
+        <div class="timeline-dot">★</div>
+        <div class="timeline-content">
+          <div class="timeline-time">13.30 – 15.30</div>
+          <div class="timeline-session">Workshop Interaktif</div>
+          <div class="timeline-detail">3 kelas paralel (max 50 pax each): Branding, UX Design, Social Media</div>
+          <div class="timeline-pic">Fasilitator masing-masing kelas</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">6</div>
+        <div class="timeline-content">
+          <div class="timeline-time">15.30 – 17.00</div>
+          <div class="timeline-session">Expo & Demo Produk</div>
+          <div class="timeline-detail">Showcase produk partner & sponsor, free trial booth</div>
+        </div>
+      </div>
+      <div class="timeline-item highlight">
+        <div class="timeline-dot">🎉</div>
+        <div class="timeline-content">
+          <div class="timeline-time">19.00 – 22.00</div>
+          <div class="timeline-session">Gala Dinner & Award Night</div>
+          <div class="timeline-detail">Cocktail dinner, penyerahan penghargaan, live entertainment</div>
+          <div class="timeline-pic">MC Malam + Artis Tamu</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:16px">
+      <span class="badge badge-dark">Hari 2 — Minggu, 16 Agustus 2025</span>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot">1</div>
+        <div class="timeline-content">
+          <div class="timeline-time">08.00 – 09.00</div>
+          <div class="timeline-session">Registrasi Hari 2 & Morning Briefing</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">2</div>
+        <div class="timeline-content">
+          <div class="timeline-time">09.00 – 11.00</div>
+          <div class="timeline-session">Keynote Session II + Talkshow</div>
+          <div class="timeline-detail">Guest speaker nasional & diskusi interaktif</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot">3</div>
+        <div class="timeline-content">
+          <div class="timeline-time">11.00 – 12.00</div>
+          <div class="timeline-session">Sesi Q&A & Networking</div>
+        </div>
+      </div>
+      <div class="timeline-item highlight">
+        <div class="timeline-dot">🏁</div>
+        <div class="timeline-content">
+          <div class="timeline-time">13.00 – 15.00</div>
+          <div class="timeline-session">Closing Ceremony</div>
+          <div class="timeline-detail">Sesi penutupan resmi, foto bersama, distribusi kenang-kenangan</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ TEAM ══════════════════ -->
+<section class="section" style="background: linear-gradient(180deg, var(--bg) 0%, #f0f0ec 100%)">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">03 — Tim</p>
+      <h2 class="section-title serif">Struktur Tim Pelaksana</h2>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">👑</div>
+        <div class="team-name">Nama PIC</div>
+        <div class="team-role">Event Director</div>
+        <div class="team-contact">+62 812-xxxx-xxxx</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🎨</div>
+        <div class="team-name">Nama PIC</div>
+        <div class="team-role">Creative Director</div>
+        <div class="team-contact">+62 813-xxxx-xxxx</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">📋</div>
+        <div class="team-name">Nama PIC</div>
+        <div class="team-role">Ops Manager</div>
+        <div class="team-contact">+62 814-xxxx-xxxx</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">📣</div>
+        <div class="team-name">Nama PIC</div>
+        <div class="team-role">Marketing & PR</div>
+        <div class="team-contact">+62 815-xxxx-xxxx</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">🎬</div>
+        <div class="team-name">Nama PIC</div>
+        <div class="team-role">Documentation</div>
+        <div class="team-contact">+62 816-xxxx-xxxx</div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">💰</div>
+        <div class="team-name">Nama PIC</div>
+        <div class="team-role">Finance</div>
+        <div class="team-contact">+62 817-xxxx-xxxx</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ SPONSOR ══════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">04 — Sponsor & Partner</p>
+      <h2 class="section-title serif">Dukungan & Kemitraan</h2>
+      <p class="section-desc">Terima kasih kepada seluruh pihak yang telah mendukung penyelenggaraan event ini.</p>
+    </div>
+
+    <div class="sponsor-tier">
+      <div class="sponsor-tier-label">
+        <span class="badge badge-gold">Gold Sponsor</span>
+        <div class="sponsor-tier-line"></div>
+      </div>
+      <div class="sponsor-grid">
+        <div class="sponsor-box gold-tier">Logo Sponsor A</div>
+        <div class="sponsor-box gold-tier">Logo Sponsor B</div>
+      </div>
+    </div>
+
+    <div class="sponsor-tier">
+      <div class="sponsor-tier-label">
+        <span class="badge" style="background:#f0f0ec;color:var(--ink-2)">Silver Sponsor</span>
+        <div class="sponsor-tier-line"></div>
+      </div>
+      <div class="sponsor-grid">
+        <div class="sponsor-box silver-tier">Logo Sponsor C</div>
+        <div class="sponsor-box silver-tier">Logo Sponsor D</div>
+        <div class="sponsor-box silver-tier">Logo Sponsor E</div>
+      </div>
+    </div>
+
+    <div class="sponsor-tier">
+      <div class="sponsor-tier-label">
+        <span class="badge" style="background:#f0f4ff;color:#3352b5">Media Partner</span>
+        <div class="sponsor-tier-line"></div>
+      </div>
+      <div class="sponsor-grid">
+        <div class="sponsor-box">Media 1</div>
+        <div class="sponsor-box">Media 2</div>
+        <div class="sponsor-box">Media 3</div>
+        <div class="sponsor-box">Media 4</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ BUDGET ══════════════════ -->
+<section class="section" style="background:#f5f5f2">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">05 — Anggaran</p>
+      <h2 class="section-title serif">Estimasi Anggaran</h2>
+      <p class="section-desc">Rincian kebutuhan biaya penyelenggaraan event (dalam IDR).</p>
+    </div>
+    <div class="card" style="padding:0; overflow:hidden">
+      <table class="budget-table">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Keterangan</th>
+            <th class="budget-amount">Estimasi</th>
+            <th style="text-align:center">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Venue & Perizinan</strong></td>
+            <td>Sewa gedung 2 hari + setup</td>
+            <td class="budget-amount">Rp 85.000.000</td>
+            <td style="text-align:center"><span class="budget-tag confirmed">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><strong>Sound & Lighting</strong></td>
+            <td>Full PA, LED backdrop, moving head</td>
+            <td class="budget-amount">Rp 55.000.000</td>
+            <td style="text-align:center"><span class="budget-tag confirmed">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><strong>Catering</strong></td>
+            <td>1.500 pax × 2 hari (lunch + coffee break)</td>
+            <td class="budget-amount">Rp 120.000.000</td>
+            <td style="text-align:center"><span class="budget-tag pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td><strong>Dekorasi & Branding</strong></td>
+            <td>Booth, backdrop, signage, florals</td>
+            <td class="budget-amount">Rp 45.000.000</td>
+            <td style="text-align:center"><span class="budget-tag pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td><strong>Dokumentasi</strong></td>
+            <td>Foto, video, live streaming</td>
+            <td class="budget-amount">Rp 35.000.000</td>
+            <td style="text-align:center"><span class="budget-tag confirmed">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><strong>Speaker & Entertainer</strong></td>
+            <td>8 speaker + 1 artis tamu</td>
+            <td class="budget-amount">Rp 95.000.000</td>
+            <td style="text-align:center"><span class="budget-tag pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td><strong>Materi & Kit Peserta</strong></td>
+            <td>Goodie bag, name tag, print material</td>
+            <td class="budget-amount">Rp 22.000.000</td>
+            <td style="text-align:center"><span class="budget-tag confirmed">Confirmed</span></td>
+          </tr>
+          <tr>
+            <td><strong>Marketing & Promosi</strong></td>
+            <td>Iklan digital, press release, KOL</td>
+            <td class="budget-amount">Rp 30.000.000</td>
+            <td style="text-align:center"><span class="budget-tag pending">Pending</span></td>
+          </tr>
+          <tr>
+            <td><strong>Contingency (10%)</strong></td>
+            <td>Cadangan tak terduga</td>
+            <td class="budget-amount">Rp 48.700.000</td>
+            <td style="text-align:center"><span class="budget-tag" style="background:#e8e8e4;color:var(--ink-3)">Buffer</span></td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr class="total">
+            <td colspan="2"><strong>Total Estimasi</strong></td>
+            <td class="budget-amount" style="color:var(--gold-dk)">Rp 535.700.000</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ GALLERY ══════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">06 — Galeri</p>
+      <h2 class="section-title serif">Referensi Visual</h2>
+      <p class="section-desc">Foto dokumentasi event sebelumnya & moodboard referensi.</p>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        📸
+        <div class="gallery-label">Opening Ceremony — Event Sebelumnya</div>
+      </div>
+      <div class="gallery-item">🎤<div class="gallery-label">Keynote Session</div></div>
+      <div class="gallery-item">🤝<div class="gallery-label">Networking Session</div></div>
+      <div class="gallery-item">🍽<div class="gallery-label">Gala Dinner</div></div>
+      <div class="gallery-item">🏆<div class="gallery-label">Award Night</div></div>
+    </div>
+    <p style="font-size:12px;color:var(--ink-3);margin-top:12px;text-align:center">
+      Ganti placeholder di atas dengan foto dokumentasi / moodboard aktual
+    </p>
+  </div>
+</section>
+
+<!-- ══════════════════ DELIVERABLES ══════════════════ -->
+<section class="section" style="background:#f5f5f2">
+  <div class="container">
+    <div class="section-header">
+      <p class="section-label">07 — Deliverables</p>
+      <h2 class="section-title serif">Yang Akan Diserahkan ke Klien</h2>
+    </div>
+    <div class="deliverable-list">
+      <div class="deliverable-item">
+        <div class="deliverable-check">✓</div>
+        <div>
+          <div class="deliverable-title">Event Brief Dokumen (PDF)</div>
+          <div class="deliverable-desc">Dokumen ini dalam format siap cetak & presentasi</div>
+        </div>
+      </div>
+      <div class="deliverable-item">
+        <div class="deliverable-check">✓</div>
+        <div>
+          <div class="deliverable-title">Rundown Detail</div>
+          <div class="deliverable-desc">Jadwal per menit disertai PIC dan catatan teknis</div>
+        </div>
+      </div>
+      <div class="deliverable-item">
+        <div class="deliverable-check">✓</div>
+        <div>
+          <div class="deliverable-title">Floor Plan & Layout Venue</div>
+          <div class="deliverable-desc">Denah penempatan booth, panggung, dan area peserta</div>
+        </div>
+      </div>
+      <div class="deliverable-item">
+        <div class="deliverable-check">✓</div>
+        <div>
+          <div class="deliverable-title">RAB (Rincian Anggaran Biaya)</div>
+          <div class="deliverable-desc">Spreadsheet lengkap dengan breakdown per vendor</div>
+        </div>
+      </div>
+      <div class="deliverable-item">
+        <div class="deliverable-check">✓</div>
+        <div>
+          <div class="deliverable-title">Laporan Pasca Event</div>
+          <div class="deliverable-desc">Rekap pelaksanaan, dokumentasi foto/video, evaluasi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ CTA ══════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="cta-block">
+      <div>
+        <h3 class="cta-title">Siap untuk memulai?</h3>
+        <p class="cta-sub">
+          Hubungi kami untuk diskusi lebih lanjut mengenai konsep, timeline,
+          dan detail teknis penyelenggaraan event ini.
+        </p>
+      </div>
+      <a href="mailto:afdaladyaa2002@gmail.com" class="cta-btn">Hubungi Kami →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════ FOOTER ══════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-logo">Negative<span>Coto</span></div>
+    <p>Dokumen ini bersifat <strong>konfidensial</strong> dan hanya ditujukan kepada penerima yang tercantum.</p>
+    <p style="margin-top:6px">© 2025 NegativeCoto — Event &amp; Creative Agency</p>
+  </div>
+</footer>
+
+</body>
+</html>
